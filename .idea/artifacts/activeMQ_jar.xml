@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact name="activeMQ:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/activeMQ_jar</output-path>
+    <root id="root">
+      <element id="archive" name="activeMQ.jar">
+        <element id="module-output" name="activeMQ" />
+      </element>
+      <element id="library" level="project" name="Java EE 6-Java EE 6" />
+      <element id="library" level="project" name="Maven: org.apache.activemq:activemq-all:5.12.0" />
+      <element id="library" level="project" name="Maven: log4j:log4j:1.2.17" />
+    </root>
+  </artifact>
+</component>
