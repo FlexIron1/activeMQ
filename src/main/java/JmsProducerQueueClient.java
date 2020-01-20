@@ -1,10 +1,9 @@
 import org.apache.activemq.ActiveMQConnectionFactory;
 
 import javax.jms.*;
-import java.net.URISyntaxException;
  
 public class JmsProducerQueueClient {
-    public static void main(String[] args) throws URISyntaxException, Exception {
+    public static void main(String[] args) throws  Exception {
         Connection connection = null;
         try {
             // Producer
