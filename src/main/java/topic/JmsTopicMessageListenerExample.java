@@ -1,25 +1,20 @@
 package topic;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import javax.jms.Connection;
-import javax.jms.ConnectionFactory;
-import javax.jms.Message;
-import javax.jms.MessageConsumer;
-import javax.jms.MessageProducer;
-import javax.jms.Session;
-import javax.jms.Topic;
-
 import Listener.ConsumerMessageListener;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.broker.BrokerFactory;
 import org.apache.activemq.broker.BrokerService;
 import org.apache.log4j.Logger;
 
-public class JmsTopicMessageListenerExample {
-    final static Logger logger = Logger.getLogger(JmsTopicMessageListenerExample.class);
+import javax.jms.*;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Scanner;
 
-    public static void main(String[] args) throws URISyntaxException, Exception {
+public class JmsTopicMessageListenerExample {
+    private final static Logger logger = Logger.getLogger(JmsTopicMessageListenerExample.class);
+
+    public static void main(String[] args) throws  Exception {
 
 
         BrokerService broker = BrokerFactory.createBroker(new URI(
@@ -32,9 +27,8 @@ public class JmsTopicMessageListenerExample {
                     "tcp://localhost:61615");
             clientConnection = connectionFactory.createConnection();
             Session session = clientConnection.createSession(false,
-                    Session.AUTO_ACKNOWLEDGE);
+                    Session.CLIENT_ACKNOWLEDGE);
             Topic topic = session.createTemporaryTopic();
-
             // Consumer1 подписывается на customerTopic
             MessageConsumer consumer1 = session.createConsumer(topic);
             consumer1.setMessageListener(new ConsumerMessageListener("Самат"));
@@ -46,14 +40,15 @@ public class JmsTopicMessageListenerExample {
             clientConnection.start();
 
             // Публикация
-            String payload = "Привет";
+            Scanner scanner = new Scanner(System.in);
+            String payload = scanner.nextLine();
             Message msg = session.createTextMessage(payload);
             MessageProducer producer = session.createProducer(topic);
             System.out.println("Отправка сообщения '" + payload + "'");
             producer.send(msg);
 
             Thread.sleep(3000);
-            session.close();
+
 
         } catch (Exception ex) {
             logger.error("Ошибка", ex);
@@ -61,8 +56,10 @@ public class JmsTopicMessageListenerExample {
         } finally {
             if (clientConnection != null) {
                 clientConnection.close();
+
             }
             broker.stop();
+//            broker.start();
         }
 
     }
